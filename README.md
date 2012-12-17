@@ -1,4 +1,4 @@
 stdclasstoxml
 =============
 
-Drupal stdClass to XML
+PHP Class for converting XML to Object and Object to XML
