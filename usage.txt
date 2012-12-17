@@ -1,0 +1,141 @@
+XML String to PHP object
+========================
+
+<?php
+$obj = new ObjectAndXML();
+ 
+$str = <<<STR
+<?xml version="1.0" encoding="utf-8"?>
+<records>
+    <person>
+      <name>XYZ</name>
+        <age>28</age>
+        <gender>Male</gender>
+    </person>
+    <person>
+    	<name>ABC</name>
+        <age>25</age>
+        <gender>Male</gender>
+    </person>
+</records>
+STR;
+ 
+$recordsObj = $obj->xmlToObj($str);
+echo '<pre>';
+var_dump($recordsObj);
+ 
+// Above code will give you this output on browser
+/*
+object(SimpleXMLElement)#3 (1) {
+  ["person"]=>
+  array(2) {
+    [0]=>
+    object(SimpleXMLElement)#4 (3) {
+      ["name"]=>
+      string(3) "XYZ"
+      ["age"]=>
+      string(2) "28"
+      ["gender"]=>
+      string(4) "Male"
+    }
+    [1]=>
+    object(SimpleXMLElement)#5 (3) {
+      ["name"]=>
+      string(3) "ABC"
+      ["age"]=>
+      string(2) "25"
+      ["gender"]=>
+      string(4) "Male"
+    }
+  }
+}
+*/
+ 
+// If you want to access value of "name" tag under second "person" tag then you can use 
+echo $recordsObj->person[1]->name;
+?>
+
+
+PHP object into XML string.
+==========================
+<?php
+$obj = new ObjectAndXML();
+ 
+$objData1 = new stdClass;
+ 
+$objData1->records->person[0]->name = 'XYZ';
+$objData1->records->person[0]->age = '28';
+$objData1->records->person[0]->gender = 'Male';
+ 
+$objData1->records->person[1]->name = 'ABC';
+$objData1->records->person[1]->age = '25';
+$objData1->records->person[1]->gender = 'Male';
+ 
+echo $recordsXML = $obj->objToXML($objData1);
+ 
+// Output will be
+/*
+<?xml version="1.0"?>
+<records>
+ <person>
+  <name>XYZ</name>
+  <age>28</age>
+  <gender>Male</gender>
+ </person>
+ <person>
+  <name>ABC</name>
+  <age>25</age>
+  <gender>Male</gender>
+ </person>
+</records>
+*/
+ 
+$objData2 = new stdClass;
+ 
+$objData2->records->person[0]->name[] = 'XYZ';
+$objData2->records->person[0]->name[] = 'ABC';
+$objData2->records->person[0]->name[] = 'PQR';
+ 
+$objData2->records->person[1]->name[] = 'XYZ1';
+$objData2->records->person[1]->name[] = 'ABC1';
+$objData2->records->person[1]->name[] = 'PQR1';
+ 
+echo $recordsXML = $obj->objToXML($objData2);
+ 
+// Output will be
+/*
+<?xml version="1.0"?>
+<records>
+ <person>
+  <name>XYZ</name>
+  <name>ABC</name>
+  <name>PQR</name>
+ </person>
+ <person>
+  <name>XYZ1</name>
+  <name>ABC1</name>
+  <name>PQR1</name>
+ </person>
+</records>
+*/
+ 
+$objData3 = new stdClass;
+ 
+$objData3->records->person->name = 'XYZ';
+$objData3->records->person->age = '28';
+$objData3->records->person->gender = 'Male';
+ 
+echo $recordsXML = $obj->objToXML($objData3);
+ 
+// Output will be
+/*
+<?xml version="1.0"?>
+<records>
+ <person>
+  <name>XYZ</name>
+  <age>28</age>
+  <gender>Male</gender>
+ </person>
+</records>
+*/
+?>
